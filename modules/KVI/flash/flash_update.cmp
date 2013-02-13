@@ -1,0 +1,37 @@
+--Copyright (C) 1991-2011 Altera Corporation
+--Your use of Altera Corporation's design tools, logic functions 
+--and other software and tools, and its AMPP partner logic 
+--functions, and any output files from any of the foregoing 
+--(including device programming or simulation files), and any 
+--associated documentation or information are expressly subject 
+--to the terms and conditions of the Altera Program License 
+--Subscription Agreement, Altera MegaCore Function License 
+--Agreement, or other applicable license agreement, including, 
+--without limitation, that your use is for the sole purpose of 
+--programming logic devices manufactured by Altera and sold by 
+--Altera or its authorized distributors.  Please refer to the 
+--applicable agreement for further details.
+
+
+component flash_update
+	PORT
+	(
+		asmi_busy		: IN STD_LOGIC  := '0';
+		asmi_data_valid		: IN STD_LOGIC  := '0';
+		asmi_dataout		: IN STD_LOGIC_VECTOR (7 DOWNTO 0) :=  (OTHERS => '0');
+		clock		: IN STD_LOGIC ;
+		data_in		: IN STD_LOGIC_VECTOR (23 DOWNTO 0);
+		param		: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+		read_param		: IN STD_LOGIC ;
+		reconfig		: IN STD_LOGIC ;
+		reset		: IN STD_LOGIC ;
+		reset_timer		: IN STD_LOGIC ;
+		write_param		: IN STD_LOGIC ;
+		asmi_addr		: OUT STD_LOGIC_VECTOR (23 DOWNTO 0);
+		asmi_rden		: OUT STD_LOGIC ;
+		asmi_read		: OUT STD_LOGIC ;
+		busy		: OUT STD_LOGIC ;
+		data_out		: OUT STD_LOGIC_VECTOR (23 DOWNTO 0);
+		pof_error		: OUT STD_LOGIC 
+	);
+end component;

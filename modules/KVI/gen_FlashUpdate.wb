@@ -1,0 +1,236 @@
+peripheral { 
+name = "External Flash Update"; 
+description = "Access to external flash for FPGA configuration";
+hdl_entity = "wb_FlashUpdate"; 
+prefix = "WBflash"; 
+	reg { 
+		name = "Flash parameters"; 
+		description = "Write flash parameters";
+		prefix = "params"; 
+		field { 
+			name = "parameter data"; 
+			prefix = "data"; 
+			description = "Data to write to parameters"; 
+			type = SLV; 
+			size = 24; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "parameter address"; 
+			prefix = "address"; 
+			description = "Address of parameter to write"; 
+			type = SLV; 
+			size = 3; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "parameter write"; 
+			prefix = "write"; 
+			description = "Write to parameters"; 
+			type = PASS_THROUGH; 
+			size = 1; 
+		}; 
+		field { 
+			name = "parameter read request"; 
+			prefix = "request"; 
+			description = "Requets read parameters"; 
+			type = PASS_THROUGH; 
+			size = 1; 
+		}; 
+		field { 
+			name = "start reconfiguration"; 
+			prefix = "reconf"; 
+			description = "Starts reconfiguration if equal to 101"; 
+			type = PASS_THROUGH; 
+			size = 3; 
+		}; 
+	}; 
+	reg { 
+		name = "Flash parameters read"; 
+		description = "Read parameter that has been requested";
+		prefix = "params_read"; 
+		field { 
+			name = "data read"; 
+			prefix = "data"; 
+			description = "Data from requested parameter"; 
+			type = SLV; 
+			size = 24; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "addres read"; 
+			prefix = "address"; 
+			description = "Address of requested parameter"; 
+			type = SLV; 
+			size = 3; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "configuration busy"; 
+			prefix = "busy"; 
+			description = "Remote update block is busy"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "configuration data error"; 
+			prefix = "error"; 
+			description = "Configuration data contains an error"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "configuration write error"; 
+			prefix = "illegal"; 
+			description = "illegal write to flash"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "illegal flash erase"; 
+			prefix = "erase_error"; 
+			description = "illegal flash erase"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+	}; 
+
+	reg { 
+		name = "Flash data"; 
+		description = "Write or Read flash data";
+		prefix = "flash_data"; 
+		field { 
+			name = "flash data"; 
+			prefix = "data"; 
+			description = "Data to write to flash"; 
+			type = SLV; 
+			size = 8; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "flash address"; 
+			prefix = "address"; 
+			description = "Address of data to write to flash or read from flash"; 
+			type = SLV; 
+			size = 24; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "Access to flash, disable in wb_FlashUpdate.vhd"; 
+			prefix = "access"; 
+			description = "Access to flash, disable in wb_FlashUpdate.vhd"; 
+			type = PASS_THROUGH; 
+			size = 0; 
+		}; 
+	}; 
+	reg { 
+		name = "Flash read"; 
+		description = "Read flash data";
+		prefix = "flash_read"; 
+		field { 
+			name = "data from flash"; 
+			prefix = "data"; 
+			description = "data from flash"; 
+			type = SLV; 
+			size = 8; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "data from flash is valid"; 
+			prefix = "valid"; 
+			description = "data from flash is valid"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "accessing flash is busy"; 
+			prefix = "busy"; 
+			description = "accessing flash is busy"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+		field { 
+			name = "error accessing flash"; 
+			prefix = "error"; 
+			description = "error accessing flash"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_ONLY; 
+			access_dev = WRITE_ONLY; 
+		}; 
+	};
+	reg { 
+		name = "Flash access"; 
+		description = "Direct access to flash";
+		prefix = "flash_access"; 
+		field { 
+			name = "Enable data access"; 
+			prefix = "enable"; 
+			description = "Enable data access to/from flash"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "Enable reading from flash"; 
+			prefix = "read_enable"; 
+			description = "Enable reading flash"; 
+			type = SLV; 
+			size = 1; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "Enable writing to flash"; 
+			prefix = "write_enable"; 
+			description = "Enable writing to flash if equal to 101"; 
+			type = SLV; 
+			size = 3; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "Enable erasing sector"; 
+			prefix = "erase_enable"; 
+			description = "Enable erasing sector if equal to 101"; 
+			type = SLV; 
+			size = 3; 
+			access_bus = READ_WRITE; 
+			access_dev = READ_ONLY; 
+		}; 
+		field { 
+			name = "Read ID from flash"; 
+			prefix = "id"; 
+			description = "Read ID from flash"; 
+			type = PASS_THROUGH; 
+			size = 1; 
+		}; 
+		field { 
+			name = "Read status form flash"; 
+			prefix = "status"; 
+			description = "Read status form flash"; 
+			type = PASS_THROUGH; 
+			size = 1; 
+		}; 
+	};
+}; 

@@ -1,0 +1,20 @@
+flash_access_inst : flash_access PORT MAP (
+		addr	 => addr_sig,
+		clkin	 => clkin_sig,
+		datain	 => datain_sig,
+		rden	 => rden_sig,
+		read	 => read_sig,
+		read_rdid	 => read_rdid_sig,
+		read_status	 => read_status_sig,
+		sector_erase	 => sector_erase_sig,
+		shift_bytes	 => shift_bytes_sig,
+		wren	 => wren_sig,
+		write	 => write_sig,
+		busy	 => busy_sig,
+		data_valid	 => data_valid_sig,
+		dataout	 => dataout_sig,
+		illegal_erase	 => illegal_erase_sig,
+		illegal_write	 => illegal_write_sig,
+		rdid_out	 => rdid_out_sig,
+		status_out	 => status_out_sig
+	);
