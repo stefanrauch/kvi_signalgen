@@ -1,0 +1,71 @@
+#Commands to access flash on the Pexaria2a board
+
+
+
+################# miscellaneous commands #####################
+# pcie devices:
+eb-ls dev/pcie_wb0
+
+#switch on all leds:
+eb-write dev/pcie_wb0 0x100400/4 0xff
+
+#reset update module, only necessary in case of problems
+eb-write -v dev/pcie_wb0 0x110800/4 0xe0000000
+
+
+
+
+################# write/read to/from flash #####################
+#for Altera .rbf files the bytes must be bit-reversed
+#load Altera .rbf file in flash at address 0x00800000 (application firmware)
+etherbone-api/tools/eb-loadflash -v -m dev/pcie_wb0 0x110800 0x00800000 wishbone_demo.rbf
+#or from etherbone-api directory :
+tools/eb-loadflash -v -m dev/pcie_wb0 0x110800 0x00800000 ../wishbone_demo.rbf
+
+#load factory firmware:
+tools/eb-loadflash -v -m dev/pcie_wb0 0x110800 0x00000000 ../wishbone_demo.rbf
+
+#read data from flash at address 0x00800000 and write to file:
+#the firmware size cannot be read from the flash, in this case 0x00300000 is large enough
+tools/eb-readflash -v -m -c64 dev/pcie_wb0 0x110800 0x00800000 0x00300000 ../readback.rbf
+
+
+
+
+################# reconfigure #####################
+#set application flash address:
+eb-write -v dev/pcie_wb0 0x110800/4 0x0c800000
+#set application mode:
+eb-write -v dev/pcie_wb0 0x110800/4 0x0d000001
+
+#start reconf:
+#if the reconfiguration succeeds the FPGA is loaded and the bus is not accessible
+eb-write -v dev/pcie_wb0 0x110800/4 0xa0000000
+
+
+
+
+################# read parameters #####################
+#for reading: first write to baseaddress with parameter at bit 27..24 and bit 28=1
+#  then a read from baseaddress+4 will give the result with the parameter index at bit 27..24
+
+#request parameter 0: reason of reconfigure bits[5..0]: watchdog,nCONFIG,ARRIA2,nSTATUS,CRC
+eb-write dev/pcie_wb0 0x110800/4 0x10000000
+eb-read dev/pcie_wb0 0x110804/4
+
+#request parameter 2: watchdog timer value 
+eb-write dev/pcie_wb0 0x110800/4 0x12000000
+eb-read dev/pcie_wb0 0x110804/4
+
+#request parameter 3: watchdog timer enabled (bit 0)
+eb-write dev/pcie_wb0 0x110800/4 0x13000000
+eb-read dev/pcie_wb0 0x110804/4
+
+#request parameter 4: address application firmware
+eb-write dev/pcie_wb0 0x110800/4 0x14000000
+eb-read dev/pcie_wb0 0x110804/4
+
+#request parameter 5: application mode (bit 0)
+eb-write dev/pcie_wb0 0x110800/4 0x15000000
+eb-read dev/pcie_wb0 0x110804/4
+

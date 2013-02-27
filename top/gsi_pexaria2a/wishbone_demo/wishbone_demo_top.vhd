@@ -155,13 +155,6 @@ component FlashUpdateModule is
     );
 end component;
 
-component flash_loader is
-	port
-	( 
-		noe_in		                           : in std_logic
-	);
-end component;
-
   constant c_xwb_gpio32_sdb : t_sdb_device := (
     abi_class     => x"0000", -- undocumented device
     abi_ver_major => x"01",
@@ -723,8 +716,7 @@ FlashUpdateModule1: FlashUpdateModule port map(
 		gpio_slave_o => flashUpdate_slave_o,
 		watchdog_reset_i => watchdog_reset_timer_s);
 
--- flash_loader1: flash_loader port map(noe_in=> '0');
-
+-- module to generate watchdog signal, only used for testing
 watchdogresetprocess: process(clock20MHz_s)
 variable counter_v : integer range 0 to WATCHDOGTIME := 0;
 begin
